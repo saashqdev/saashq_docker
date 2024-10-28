@@ -1,0 +1,58 @@
+ARG SAASHQ_BRANCH=main
+
+FROM saashq/build:${SAASHQ_BRANCH} AS builder
+
+ARG SAASHQ_BRANCH=main
+ARG SAASHQ_PATH=https://github.com/saashqdev/shq-framework
+ARG APPS_JSON_BASE64
+
+USER root
+
+RUN if [ -n "${APPS_JSON_BASE64}" ]; then \
+    mkdir /opt/saashq && echo "${APPS_JSON_BASE64}" | base64 -d > /opt/saashq/apps.json; \
+  fi
+
+USER saashq
+
+RUN export APP_INSTALL_ARGS="" && \
+  if [ -n "${APPS_JSON_BASE64}" ]; then \
+    export APP_INSTALL_ARGS="--apps_path=/opt/saashq/apps.json"; \
+  fi && \
+  bench init ${APP_INSTALL_ARGS}\
+    --saashq-branch=${SAASHQ_BRANCH} \
+    --saashq-path=${SAASHQ_PATH} \
+    --no-procfile \
+    --no-backups \
+    --skip-redis-config-generation \
+    --verbose \
+    /home/saashq/saashq-bench && \
+  cd /home/saashq/saashq-bench && \
+  echo "{}" > sites/common_site_config.json && \
+  find apps -mindepth 1 -path "*/.git" | xargs rm -fr
+
+FROM saashq/base:${SAASHQ_BRANCH} AS backend
+
+USER saashq
+
+COPY --from=builder --chown=saashq:saashq /home/saashq/saashq-bench /home/saashq/saashq-bench
+
+WORKDIR /home/saashq/saashq-bench
+
+VOLUME [ \
+  "/home/saashq/saashq-bench/sites", \
+  "/home/saashq/saashq-bench/sites/assets", \
+  "/home/saashq/saashq-bench/logs" \
+]
+
+CMD [ \
+  "/home/saashq/saashq-bench/env/bin/gunicorn", \
+  "--chdir=/home/saashq/saashq-bench/sites", \
+  "--bind=0.0.0.0:8000", \
+  "--threads=4", \
+  "--workers=2", \
+  "--worker-class=gthread", \
+  "--worker-tmp-dir=/dev/shm", \
+  "--timeout=120", \
+  "--preload", \
+  "saashq.app:application" \
+]
