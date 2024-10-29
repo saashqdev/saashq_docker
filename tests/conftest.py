@@ -69,7 +69,7 @@ def saashq_setup(compose: Compose):
 @pytest.fixture(scope="session")
 def saashq_site(compose: Compose):
     site_name = "tests.localhost"
-    compose.bench(
+    compose.wrench(
         "new-site",
         "--no-mariadb-socket",
         "--mariadb-root-password",
@@ -105,7 +105,7 @@ def erpnexus_site(compose: Compose):
         "erpnexus",
         site_name,
     ]
-    compose.bench(*args)
+    compose.wrench(*args)
     compose("restart", "backend")
     yield site_name
 
@@ -114,15 +114,15 @@ def erpnexus_site(compose: Compose):
 def postgres_setup(compose: Compose):
     compose.stop()
     compose("-f", "overrides/compose.postgres.yaml", "up", "-d", "--quiet-pull")
-    compose.bench("set-config", "-g", "root_login", "postgres")
-    compose.bench("set-config", "-g", "root_password", "123")
+    compose.wrench("set-config", "-g", "root_login", "postgres")
+    compose.wrench("set-config", "-g", "root_password", "123")
     yield
     compose.stop()
 
 
 @pytest.fixture
 def python_path():
-    return "/home/saashq/saashq-bench/env/bin/python"
+    return "/home/saashq/saashq-wrench/env/bin/python"
 
 
 @dataclass

@@ -6,7 +6,7 @@ updates:
       interval: daily
 
   - package-ecosystem: docker
-    directory: images/bench
+    directory: images/wrench
     schedule:
       interval: daily
 

@@ -9,7 +9,7 @@ services:
     entrypoint: ["bash", "-c"]
     command:
       - |
-        bench --site all backup
+        wrench --site all backup
         ## Uncomment for restic snapshots.
         # restic snapshots || restic init
         # restic backup sites
@@ -22,7 +22,7 @@ services:
       - AWS_SECRET_ACCESS_KEY=secret_access_key
       - RESTIC_PASSWORD=restic_password
     volumes:
-      - "sites:/home/saashq/saashq-bench/sites"
+      - "sites:/home/saashq/saashq-wrench/sites"
     networks:
       - erpnexus-network
 
@@ -46,7 +46,7 @@ In case of single docker host setup, add crontab entry for backup every 6 hours.
 Or
 
 ```
-0 */6 * * * docker compose -p erpnexus exec backend bench --site all backup --with-files > /dev/null
+0 */6 * * * docker compose -p erpnexus exec backend wrench --site all backup --with-files > /dev/null
 ```
 
 Notes:

@@ -67,7 +67,7 @@ def test_files_reachable(saashq_site: str, tmp_path: Path, compose: Compose):
     compose(
         "cp",
         str(file_path),
-        f"backend:/home/saashq/saashq-bench/sites/{saashq_site}/public/files/",
+        f"backend:/home/saashq/saashq-wrench/sites/{saashq_site}/public/files/",
     )
 
     def callback(text: str):
@@ -90,7 +90,7 @@ def test_saashq_connections_in_backends(
     compose("cp", f"tests/{filename}", f"{service}:/tmp/")
     compose.exec(
         "-w",
-        "/home/saashq/saashq-bench/sites",
+        "/home/saashq/saashq-wrench/sites",
         service,
         python_path,
         f"/tmp/{filename}",
@@ -103,7 +103,7 @@ def test_push_backup(
     compose: Compose,
 ):
     restic_password = "secret"
-    compose.bench("--site", saashq_site, "backup", "--with-files")
+    compose.wrench("--site", saashq_site, "backup", "--with-files")
     restic_args = [
         "--env=RESTIC_REPOSITORY=s3:http://minio:9000/saashq",
         f"--env=AWS_ACCESS_KEY_ID={s3_service.access_key}",
@@ -141,7 +141,7 @@ class TestErpnext:
 @pytest.mark.usefixtures("postgres_setup")
 class TestPostgres:
     def test_site_creation(self, compose: Compose):
-        compose.bench(
+        compose.wrench(
             "new-site",
             "test-pg-site.localhost",
             "--db-type",

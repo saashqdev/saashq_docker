@@ -59,7 +59,7 @@ If you ran in a Dev Docker environment, to view container logs: `docker compose 
 ### [Development](#development)
 
 - [Development using containers](docs/development.md)
-- [Bench Console and VSCode Debugger](docs/bench-console-and-vscode-debugger.md)
+- [Wrench Console and VSCode Debugger](docs/wrench-console-and-vscode-debugger.md)
 - [Connect to localhost services](docs/connect-to-localhost-services-from-containers-for-local-app-development.md)
 
 ### [Troubleshoot](docs/troubleshoot.md)
@@ -72,4 +72,4 @@ This repository is only for container related stuff. You also might want to cont
 
 - [Saashq framework](https://github.com/saashqdev/shq-framework#contributing),
 - [ERPNexus](https://github.com/saashqdev/erpnexus#contributing),
-- [Saashq Bench](https://github.com/saashqdev/bench).
+- [Saashq Wrench](https://github.com/saashqdev/wrench).

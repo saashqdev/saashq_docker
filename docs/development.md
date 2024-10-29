@@ -61,51 +61,51 @@ After the extensions are installed, you can:
 
 Notes:
 
-- The `development` directory is ignored by git. It is mounted and available inside the container. Create all your benches (installations of bench, the tool that manages saashq) inside this directory.
+- The `development` directory is ignored by git. It is mounted and available inside the container. Create all your wrenches (installations of wrench, the tool that manages saashq) inside this directory.
 - Node v14 and v10 are installed. Check with `nvm ls`. Node v14 is used by default.
 
-### Setup first bench
+### Setup first wrench
 
-> Jump to [scripts](#setup-bench--new-site-using-script) section to setup a bench automatically. Alternatively, you can setup a bench manually using below guide.
+> Jump to [scripts](#setup-wrench--new-site-using-script) section to setup a wrench automatically. Alternatively, you can setup a wrench manually using below guide.
 
 Run the following commands in the terminal inside the container. You might need to create a new terminal in VSCode.
 
 NOTE: Prior to doing the following, make sure the user is **saashq**.
 
 ```shell
-bench init --skip-redis-config-generation saashq-bench
-cd saashq-bench
+wrench init --skip-redis-config-generation saashq-wrench
+cd saashq-wrench
 ```
 
-To setup saashq framework version 14 bench set `PYENV_VERSION` environment variable to `3.10.5` (default) and use NodeJS version 16 (default),
+To setup saashq framework version 14 wrench set `PYENV_VERSION` environment variable to `3.10.5` (default) and use NodeJS version 16 (default),
 
 ```shell
 # Use default environments
-bench init --skip-redis-config-generation --saashq-branch version-14 saashq-bench
+wrench init --skip-redis-config-generation --saashq-branch version-14 saashq-wrench
 # Or set environment versions explicitly
 nvm use v16
-PYENV_VERSION=3.10.13 bench init --skip-redis-config-generation --saashq-branch version-14 saashq-bench
+PYENV_VERSION=3.10.13 wrench init --skip-redis-config-generation --saashq-branch version-14 saashq-wrench
 # Switch directory
-cd saashq-bench
+cd saashq-wrench
 ```
 
-To setup saashq framework version 13 bench set `PYENV_VERSION` environment variable to `3.9.17` and use NodeJS version 14,
+To setup saashq framework version 13 wrench set `PYENV_VERSION` environment variable to `3.9.17` and use NodeJS version 14,
 
 ```shell
 nvm use v14
-PYENV_VERSION=3.9.17 bench init --skip-redis-config-generation --saashq-branch version-13 saashq-bench
-cd saashq-bench
+PYENV_VERSION=3.9.17 wrench init --skip-redis-config-generation --saashq-branch version-13 saashq-wrench
+cd saashq-wrench
 ```
 
 ### Setup hosts
 
-We need to tell bench to use the right containers instead of localhost. Run the following commands inside the container:
+We need to tell wrench to use the right containers instead of localhost. Run the following commands inside the container:
 
 ```shell
-bench set-config -g db_host mariadb
-bench set-config -g redis_cache redis://redis-cache:6379
-bench set-config -g redis_queue redis://redis-queue:6379
-bench set-config -g redis_socketio redis://redis-queue:6379
+wrench set-config -g db_host mariadb
+wrench set-config -g redis_cache redis://redis-cache:6379
+wrench set-config -g redis_queue redis://redis-queue:6379
+wrench set-config -g redis_socketio redis://redis-queue:6379
 ```
 
 For any reason the above commands fail, set the values in `common_site_config.json` manually.
@@ -121,11 +121,11 @@ For any reason the above commands fail, set the values in `common_site_config.js
 
 ### Edit Honcho's Procfile
 
-Note : With the option '--skip-redis-config-generation' during bench init, these actions are no more needed. But at least, take a look to ProcFile to see what going on when bench launch honcho on start command
+Note : With the option '--skip-redis-config-generation' during wrench init, these actions are no more needed. But at least, take a look to ProcFile to see what going on when wrench launch honcho on start command
 
-Honcho is the tool used by Bench to manage all the processes Saashq requires. Usually, these all run in localhost, but in this case, we have external containers for Redis. For this reason, we have to stop Honcho from trying to start Redis processes.
+Honcho is the tool used by Wrench to manage all the processes Saashq requires. Usually, these all run in localhost, but in this case, we have external containers for Redis. For this reason, we have to stop Honcho from trying to start Redis processes.
 
-Honcho is installed in global python environment along with bench. To make it available locally you've to install it in every `saashq-bench/env` you create. Install it using command `./env/bin/pip install honcho`. It is required locally if you wish to use is as part of VSCode launch configuration.
+Honcho is installed in global python environment along with wrench. To make it available locally you've to install it in every `saashq-wrench/env` you create. Install it using command `./env/bin/pip install honcho`. It is required locally if you wish to use is as part of VSCode launch configuration.
 
 Open the Procfile file and remove the three lines containing the configuration from Redis, either by editing manually the file:
 
@@ -139,12 +139,12 @@ Or running the following command:
 sed -i '/redis/d' ./Procfile
 ```
 
-### Create a new site with bench
+### Create a new site with wrench
 
 You can create a new site with the following command:
 
 ```shell
-bench new-site --no-mariadb-socket sitename
+wrench new-site --no-mariadb-socket sitename
 ```
 
 sitename MUST end with .localhost for trying deployments locally.
@@ -152,17 +152,17 @@ sitename MUST end with .localhost for trying deployments locally.
 for example:
 
 ```shell
-bench new-site --no-mariadb-socket development.localhost
+wrench new-site --no-mariadb-socket development.localhost
 ```
 
 The same command can be run non-interactively as well:
 
 ```shell
-bench new-site --mariadb-root-password 123 --admin-password admin --no-mariadb-socket development.localhost
+wrench new-site --mariadb-root-password 123 --admin-password admin --no-mariadb-socket development.localhost
 ```
 
 The command will ask the MariaDB root password. The default root password is `123`.
-This will create a new site and a `development.localhost` directory under `saashq-bench/sites`.
+This will create a new site and a `development.localhost` directory under `saashq-wrench/sites`.
 The option `--no-mariadb-socket` will configure site's database credentials to work with docker.
 You may need to configure your system /etc/hosts if you're on Linux, Mac, or its Windows equivalent.
 
@@ -171,25 +171,25 @@ To setup site with PostgreSQL as database use option `--db-type postgres` and `-
 Example:
 
 ```shell
-bench new-site --db-type postgres --db-host postgresql mypgsql.localhost
+wrench new-site --db-type postgres --db-host postgresql mypgsql.localhost
 ```
 
 To avoid entering postgresql username and root password, set it in `common_site_config.json`,
 
 ```shell
-bench config set-common-config -c root_login postgres
-bench config set-common-config -c root_password '"123"'
+wrench config set-common-config -c root_login postgres
+wrench config set-common-config -c root_password '"123"'
 ```
 
 Note: If PostgreSQL is not required, the postgresql service / container can be stopped.
 
-### Set bench developer mode on the new site
+### Set wrench developer mode on the new site
 
 To develop a new app, the last step will be setting the site into developer mode. Documentation is available at [this link](https://saashq.io/docs/user/en/guides/app-development/how-enable-developer-mode-in-saashq).
 
 ```shell
-bench --site development.localhost set-config developer_mode 1
-bench --site development.localhost clear-cache
+wrench --site development.localhost set-config developer_mode 1
+wrench --site development.localhost clear-cache
 ```
 
 ### Install an app
@@ -202,43 +202,43 @@ To install custom app
 
 ```shell
 # --branch is optional, use it to point to branch on custom app repository
-bench get-app --branch version-12 https://github.com/myusername/myapp
-bench --site development.localhost install-app myapp
+wrench get-app --branch version-12 https://github.com/myusername/myapp
+wrench --site development.localhost install-app myapp
 ```
 
 At the time of this writing, the Payments app has been factored out of the Version 14 ERPNexus app and is now a separate app. ERPNexus will not install it.
 
 ```shell
-bench get-app --branch version-14 --resolve-deps erpnexus
-bench --site development.localhost install-app erpnexus
+wrench get-app --branch version-14 --resolve-deps erpnexus
+wrench --site development.localhost install-app erpnexus
 ```
 
 To install ERPNexus (from the version-13 branch):
 
 ```shell
-bench get-app --branch version-13 erpnexus
-bench --site development.localhost install-app erpnexus
+wrench get-app --branch version-13 erpnexus
+wrench --site development.localhost install-app erpnexus
 ```
 
 Note: Both saashq and erpnexus must be on branch with same name. e.g. version-14
 
 ### Start Saashq without debugging
 
-Execute following command from the `saashq-bench` directory.
+Execute following command from the `saashq-wrench` directory.
 
 ```shell
-bench start
+wrench start
 ```
 
 You can now login with user `Administrator` and the password you choose when creating the site.
 Your website will now be accessible at location [development.localhost:8000](http://development.localhost:8000)
-Note: To start bench with debugger refer section for debugging.
+Note: To start wrench with debugger refer section for debugging.
 
-### Setup bench / new site using script
+### Setup wrench / new site using script
 
 Most developers work with numerous clients and versions. Moreover, apps may be required to be installed by everyone on the team working for a client.
 
-This is simplified using a script to automate the process of creating a new bench / site and installing the required apps. `Administrator` password is for created sites is `admin`.
+This is simplified using a script to automate the process of creating a new wrench / site and installing the required apps. `Administrator` password is for created sites is `admin`.
 
 Sample `apps-example.json` is used by default, it installs erpnexus on current stable release. To install custom apps, copy the `apps-example.json` to custom json file and make changes to list of apps. Pass this file to the `installer.py` script.
 
@@ -252,14 +252,14 @@ For command help
 
 ```shell
 python installer.py --help
-usage: installer.py [-h] [-j APPS_JSON] [-b BENCH_NAME] [-s SITE_NAME] [-r SAASHQ_REPO] [-t SAASHQ_BRANCH] [-p PY_VERSION] [-n NODE_VERSION] [-v] [-a ADMIN_PASSWORD] [-d DB_TYPE]
+usage: installer.py [-h] [-j APPS_JSON] [-b WRENCH_NAME] [-s SITE_NAME] [-r SAASHQ_REPO] [-t SAASHQ_BRANCH] [-p PY_VERSION] [-n NODE_VERSION] [-v] [-a ADMIN_PASSWORD] [-d DB_TYPE]
 
 options:
   -h, --help            show this help message and exit
   -j APPS_JSON, --apps-json APPS_JSON
                         Path to apps.json, default: apps-example.json
-  -b BENCH_NAME, --bench-name BENCH_NAME
-                        Bench directory name, default: saashq-bench
+  -b WRENCH_NAME, --wrench-name WRENCH_NAME
+                        Wrench directory name, default: saashq-wrench
   -s SITE_NAME, --site-name SITE_NAME
                         Site name, should end with .localhost, default: development.localhost
   -r SAASHQ_REPO, --saashq-repo SAASHQ_REPO
@@ -277,7 +277,7 @@ options:
                         Database type to use (e.g., mariadb or postgres)
 ```
 
-A new bench and / or site is created for the client with following defaults.
+A new wrench and / or site is created for the client with following defaults.
 
 - MariaDB root password: `123`
 - Admin password: `admin`
@@ -290,10 +290,10 @@ To enable Python debugging inside Visual Studio Code, you must first install the
 
 - Click on the extension icon inside VSCode
 - Search `ms-python.python`
-- Click on `Install on Dev Container: Saashq Bench`
+- Click on `Install on Dev Container: Saashq Wrench`
 - Click on 'Reload'
 
-We need to start bench separately through the VSCode debugger. For this reason, **instead** of running `bench start` you should run the following command inside the saashq-bench directory:
+We need to start wrench separately through the VSCode debugger. For this reason, **instead** of running `wrench start` you should run the following command inside the saashq-wrench directory:
 
 ```shell
 honcho start \
@@ -319,17 +319,17 @@ For advance vscode configuration in the devcontainer, change the config files in
 You can launch a simple interactive shell console in the terminal with:
 
 ```shell
-bench --site development.localhost console
+wrench --site development.localhost console
 ```
 
 More likely, you may want to launch VSCode interactive console based on Jupyter kernel.
 
-Launch VSCode command palette (cmd+shift+p or ctrl+shift+p), run the command `Python: Select interpreter to start Jupyter server` and select `/workspace/development/saashq-bench/env/bin/python`.
+Launch VSCode command palette (cmd+shift+p or ctrl+shift+p), run the command `Python: Select interpreter to start Jupyter server` and select `/workspace/development/saashq-wrench/env/bin/python`.
 
 The first step is installing and updating the required software. Usually the saashq framework may require an older version of Jupyter, while VSCode likes to move fast, this can [cause issues](https://github.com/jupyter/jupyter_console/issues/158). For this reason we need to run the following command.
 
 ```shell
-/workspace/development/saashq-bench/env/bin/python -m pip install --upgrade jupyter ipykernel ipython
+/workspace/development/saashq-wrench/env/bin/python -m pip install --upgrade jupyter ipykernel ipython
 ```
 
 Then, run the command `Python: Show Python interactive window` from the VSCode command palette.
@@ -339,7 +339,7 @@ Replace `development.localhost` with your site and run the following code in a J
 ```python
 import saashq
 
-saashq.init(site='development.localhost', sites_path='/workspace/development/saashq-bench/sites')
+saashq.init(site='development.localhost', sites_path='/workspace/development/saashq-wrench/sites')
 saashq.connect()
 saashq.local.lang = saashq.db.get_default('lang')
 saashq.db.connect()

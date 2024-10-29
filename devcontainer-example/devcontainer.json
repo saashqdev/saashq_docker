@@ -1,5 +1,5 @@
 {
-  "name": "Saashq Bench",
+  "name": "Saashq Wrench",
   "forwardPorts": [8000, 9000, 6787],
   "remoteUser": "saashq",
   "customizations": {

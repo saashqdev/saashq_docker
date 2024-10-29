@@ -56,7 +56,7 @@ RUN useradd -ms /bin/bash saashq \
     # Clean up
     && rm -rf /var/lib/apt/lists/* \
     && rm -fr /etc/nginx/sites-enabled/default \
-    && pip3 install saashq-bench \
+    && pip3 install saashq-wrench \
     # Fixes for non-root nginx and logs to stdout
     && sed -i '/user www-data/d' /etc/nginx/nginx.conf \
     && ln -sf /dev/stdout /var/log/nginx/access.log && ln -sf /dev/stderr /var/log/nginx/error.log \
@@ -103,17 +103,17 @@ FROM build AS builder
 ARG SAASHQ_BRANCH=main
 ARG SAASHQ_PATH=https://github.com/saashqdev/shq-framework
 ARG ERPNEXUS_REPO=https://github.com/saashqdev/erpnexus
-ARG ERPNEXUS_BRANCH=version-15
-RUN bench init \
+ARG ERPNEXUS_BRANCH=main
+RUN wrench init \
   --saashq-branch=${SAASHQ_BRANCH} \
   --saashq-path=${SAASHQ_PATH} \
   --no-procfile \
   --no-backups \
   --skip-redis-config-generation \
   --verbose \
-  /home/saashq/saashq-bench && \
-  cd /home/saashq/saashq-bench && \
-  bench get-app --branch=${ERPNEXUS_BRANCH} --resolve-deps erpnexus ${ERPNEXUS_REPO} && \
+  /home/saashq/saashq-wrench && \
+  cd /home/saashq/saashq-wrench && \
+  wrench get-app --branch=${ERPNEXUS_BRANCH} --resolve-deps erpnexus ${ERPNEXUS_REPO} && \
   echo "{}" > sites/common_site_config.json && \
   find apps -mindepth 1 -path "*/.git" | xargs rm -fr
 
@@ -123,19 +123,19 @@ USER saashq
 
 RUN echo "echo \"Commands restricted in prodution container, Read FAQ before you proceed: https://saashq.fyi/ctr-faq\"" >> ~/.bashrc
 
-COPY --from=builder --chown=saashq:saashq /home/saashq/saashq-bench /home/saashq/saashq-bench
+COPY --from=builder --chown=saashq:saashq /home/saashq/saashq-wrench /home/saashq/saashq-wrench
 
-WORKDIR /home/saashq/saashq-bench
+WORKDIR /home/saashq/saashq-wrench
 
 VOLUME [ \
-  "/home/saashq/saashq-bench/sites", \
-  "/home/saashq/saashq-bench/sites/assets", \
-  "/home/saashq/saashq-bench/logs" \
+  "/home/saashq/saashq-wrench/sites", \
+  "/home/saashq/saashq-wrench/sites/assets", \
+  "/home/saashq/saashq-wrench/logs" \
 ]
 
 CMD [ \
-  "/home/saashq/saashq-bench/env/bin/gunicorn", \
-  "--chdir=/home/saashq/saashq-bench/sites", \
+  "/home/saashq/saashq-wrench/env/bin/gunicorn", \
+  "--chdir=/home/saashq/saashq-wrench/sites", \
   "--bind=0.0.0.0:8000", \
   "--threads=4", \
   "--workers=2", \

@@ -18,15 +18,15 @@ RUN export APP_INSTALL_ARGS="" && \
   if [ -n "${APPS_JSON_BASE64}" ]; then \
     export APP_INSTALL_ARGS="--apps_path=/opt/saashq/apps.json"; \
   fi && \
-  bench init ${APP_INSTALL_ARGS}\
+  wrench init ${APP_INSTALL_ARGS}\
     --saashq-branch=${SAASHQ_BRANCH} \
     --saashq-path=${SAASHQ_PATH} \
     --no-procfile \
     --no-backups \
     --skip-redis-config-generation \
     --verbose \
-    /home/saashq/saashq-bench && \
-  cd /home/saashq/saashq-bench && \
+    /home/saashq/saashq-wrench && \
+  cd /home/saashq/saashq-wrench && \
   echo "{}" > sites/common_site_config.json && \
   find apps -mindepth 1 -path "*/.git" | xargs rm -fr
 
@@ -34,19 +34,19 @@ FROM saashq/base:${SAASHQ_BRANCH} AS backend
 
 USER saashq
 
-COPY --from=builder --chown=saashq:saashq /home/saashq/saashq-bench /home/saashq/saashq-bench
+COPY --from=builder --chown=saashq:saashq /home/saashq/saashq-wrench /home/saashq/saashq-wrench
 
-WORKDIR /home/saashq/saashq-bench
+WORKDIR /home/saashq/saashq-wrench
 
 VOLUME [ \
-  "/home/saashq/saashq-bench/sites", \
-  "/home/saashq/saashq-bench/sites/assets", \
-  "/home/saashq/saashq-bench/logs" \
+  "/home/saashq/saashq-wrench/sites", \
+  "/home/saashq/saashq-wrench/sites/assets", \
+  "/home/saashq/saashq-wrench/logs" \
 ]
 
 CMD [ \
-  "/home/saashq/saashq-bench/env/bin/gunicorn", \
-  "--chdir=/home/saashq/saashq-bench/sites", \
+  "/home/saashq/saashq-wrench/env/bin/gunicorn", \
+  "--chdir=/home/saashq/saashq-wrench/sites", \
   "--bind=0.0.0.0:8000", \
   "--threads=4", \
   "--workers=2", \

@@ -41,7 +41,7 @@ async def async_main(addresses: set[Address]) -> None:
 
 
 def main() -> int:
-    with open("/home/saashq/saashq-bench/sites/common_site_config.json") as f:
+    with open("/home/saashq/saashq-wrench/sites/common_site_config.json") as f:
         config = json.load(f)
     addresses = set(get_addresses(config))
     asyncio.run(async_main(addresses))

@@ -1,6 +1,6 @@
 ### Single Server Example
 
-In this use case we have a single server with a static IP attached to it. It can be used in scenarios where one powerful VM has multiple benches and applications or one entry level VM with single site. For single bench, single site setup follow only up to the point where first bench and first site is added. If you choose this setup you can only scale vertically. If you need to scale horizontally you'll need to backup the sites and restore them on to cluster setup.
+In this use case we have a single server with a static IP attached to it. It can be used in scenarios where one powerful VM has multiple wrenches and applications or one entry level VM with single site. For single wrench, single site setup follow only up to the point where first wrench and first site is added. If you choose this setup you can only scale vertically. If you need to scale horizontally you'll need to backup the sites and restore them on to cluster setup.
 
 We will setup the following:
 
@@ -12,11 +12,11 @@ We will setup the following:
 
 Explanation:
 
-Single instance of **Traefik** will be installed and act as internal loadbalancer for multiple benches and sites hosted on the server. It can also load balance other applications along with saashq benches, e.g. wordpress, metabase, etc. We only expose the ports `80` and `443` once with this instance of traefik. Traefik will also take care of letsencrypt automation for all sites installed on the server. _Why choose Traefik over Nginx Proxy Manager?_ Traefik doesn't need additional DB service and can store certificates in a json file in a volume.
+Single instance of **Traefik** will be installed and act as internal loadbalancer for multiple wrenches and sites hosted on the server. It can also load balance other applications along with saashq wrenches, e.g. wordpress, metabase, etc. We only expose the ports `80` and `443` once with this instance of traefik. Traefik will also take care of letsencrypt automation for all sites installed on the server. _Why choose Traefik over Nginx Proxy Manager?_ Traefik doesn't need additional DB service and can store certificates in a json file in a volume.
 
-Single instance of **MariaDB** will be installed and act as database service for all the benches/projects installed on the server.
+Single instance of **MariaDB** will be installed and act as database service for all the wrenches/projects installed on the server.
 
-Each instance of ERPNexus project (bench) will have its own redis, socketio, gunicorn, nginx, workers and scheduler. It will connect to internal MariaDB by connecting to MariaDB network. It will expose sites to public through Traefik by connecting to Traefik network.
+Each instance of ERPNexus project (wrench) will have its own redis, socketio, gunicorn, nginx, workers and scheduler. It will connect to internal MariaDB by connecting to MariaDB network. It will expose sites to public through Traefik by connecting to Traefik network.
 
 ### Install Docker
 
@@ -129,9 +129,9 @@ This will make `mariadb-database` service available under `mariadb-network`. Dat
 
 ### Install ERPNexus
 
-#### Create first bench
+#### Create first wrench
 
-Create first bench called `erpnexus-one` with `one.example.com` and `two.example.com`
+Create first wrench called `erpnexus-one` with `one.example.com` and `two.example.com`
 
 Create a file called `erpnexus-one.env` in `~/gitops`
 
@@ -142,7 +142,7 @@ sed -i 's/DB_HOST=/DB_HOST=mariadb-database/g' ~/gitops/erpnexus-one.env
 sed -i 's/DB_PORT=/DB_PORT=3306/g' ~/gitops/erpnexus-one.env
 sed -i 's/SITES=`erp.example.com`/SITES=\`one.example.com\`,\`two.example.com\`/g' ~/gitops/erpnexus-one.env
 echo 'ROUTER=erpnexus-one' >> ~/gitops/erpnexus-one.env
-echo "BENCH_NETWORK=erpnexus-one" >> ~/gitops/erpnexus-one.env
+echo "WRENCH_NETWORK=erpnexus-one" >> ~/gitops/erpnexus-one.env
 ```
 
 Note:
@@ -158,13 +158,13 @@ docker compose --project-name erpnexus-one \
   --env-file ~/gitops/erpnexus-one.env \
   -f compose.yaml \
   -f overrides/compose.redis.yaml \
-  -f overrides/compose.multi-bench.yaml \
-  -f overrides/compose.multi-bench-ssl.yaml config > ~/gitops/erpnexus-one.yaml
+  -f overrides/compose.multi-wrench.yaml \
+  -f overrides/compose.multi-wrench-ssl.yaml config > ~/gitops/erpnexus-one.yaml
 ```
 
-For LAN setup do not override `compose.multi-bench-ssl.yaml`.
+For LAN setup do not override `compose.multi-wrench-ssl.yaml`.
 
-Use the above command after any changes are made to `erpnexus-one.env` file to regenerate `~/gitops/erpnexus-one.yaml`. e.g. after changing version to migrate the bench.
+Use the above command after any changes are made to `erpnexus-one.env` file to regenerate `~/gitops/erpnexus-one.yaml`. e.g. after changing version to migrate the wrench.
 
 Deploy `erpnexus-one` containers:
 
@@ -177,22 +177,22 @@ Create sites `one.example.com` and `two.example.com`:
 ```shell
 # one.example.com
 docker compose --project-name erpnexus-one exec backend \
-  bench new-site --no-mariadb-socket --mariadb-root-password changeit --install-app erpnexus --admin-password changeit one.example.com
+  wrench new-site --no-mariadb-socket --mariadb-root-password changeit --install-app erpnexus --admin-password changeit one.example.com
 ```
 
-You can stop here and have a single bench single site setup complete. Continue to add one more site to the current bench.
+You can stop here and have a single wrench single site setup complete. Continue to add one more site to the current wrench.
 
 ```shell
 # two.example.com
 docker compose --project-name erpnexus-one exec backend \
-  bench new-site --no-mariadb-socket --mariadb-root-password changeit --install-app erpnexus --admin-password changeit two.example.com
+  wrench new-site --no-mariadb-socket --mariadb-root-password changeit --install-app erpnexus --admin-password changeit two.example.com
 ```
 
-#### Create second bench
+#### Create second wrench
 
-Setting up additional bench is optional. Continue only if you need multi bench setup.
+Setting up additional wrench is optional. Continue only if you need multi wrench setup.
 
-Create second bench called `erpnexus-two` with `three.example.com` and `four.example.com`
+Create second wrench called `erpnexus-two` with `three.example.com` and `four.example.com`
 
 Create a file called `erpnexus-two.env` in `~/gitops`
 
@@ -203,7 +203,7 @@ sed -i 's/DB_HOST=/DB_HOST=mariadb-database/g' ~/gitops/erpnexus-two.env
 sed -i 's/DB_PORT=/DB_PORT=3306/g' ~/gitops/erpnexus-two.env
 echo "ROUTER=erpnexus-two" >> ~/gitops/erpnexus-two.env
 echo "SITES=\`three.example.com\`,\`four.example.com\`" >> ~/gitops/erpnexus-two.env
-echo "BENCH_NETWORK=erpnexus-two" >> ~/gitops/erpnexus-two.env
+echo "WRENCH_NETWORK=erpnexus-two" >> ~/gitops/erpnexus-two.env
 ```
 
 Note:
@@ -219,11 +219,11 @@ docker compose --project-name erpnexus-two \
   --env-file ~/gitops/erpnexus-two.env \
   -f compose.yaml \
   -f overrides/compose.redis.yaml \
-  -f overrides/compose.multi-bench.yaml \
-  -f overrides/compose.multi-bench-ssl.yaml config > ~/gitops/erpnexus-two.yaml
+  -f overrides/compose.multi-wrench.yaml \
+  -f overrides/compose.multi-wrench-ssl.yaml config > ~/gitops/erpnexus-two.yaml
 ```
 
-Use the above command after any changes are made to `erpnexus-two.env` file to regenerate `~/gitops/erpnexus-two.yaml`. e.g. after changing version to migrate the bench.
+Use the above command after any changes are made to `erpnexus-two.env` file to regenerate `~/gitops/erpnexus-two.yaml`. e.g. after changing version to migrate the wrench.
 
 Deploy `erpnexus-two` containers:
 
@@ -236,10 +236,10 @@ Create sites `three.example.com` and `four.example.com`:
 ```shell
 # three.example.com
 docker compose --project-name erpnexus-two exec backend \
-  bench new-site --no-mariadb-socket --mariadb-root-password changeit --install-app erpnexus --admin-password changeit three.example.com
+  wrench new-site --no-mariadb-socket --mariadb-root-password changeit --install-app erpnexus --admin-password changeit three.example.com
 # four.example.com
 docker compose --project-name erpnexus-two exec backend \
-  bench new-site --no-mariadb-socket --mariadb-root-password changeit --install-app erpnexus --admin-password changeit four.example.com
+  wrench new-site --no-mariadb-socket --mariadb-root-password changeit --install-app erpnexus --admin-password changeit four.example.com
 ```
 
 #### Create custom domain to existing site
@@ -253,7 +253,7 @@ Create environment file
 echo "ROUTER=custom-one-example" > ~/gitops/custom-one-example.env
 echo "SITES=\`custom-one.example.com\`" >> ~/gitops/custom-one-example.env
 echo "BASE_SITE=one.example.com" >> ~/gitops/custom-one-example.env
-echo "BENCH_NETWORK=erpnexus-one" >> ~/gitops/custom-one-example.env
+echo "WRENCH_NETWORK=erpnexus-one" >> ~/gitops/custom-one-example.env
 ```
 
 Note:
@@ -262,7 +262,7 @@ Note:
 - Change `ROUTER` variable from `custom-one.example.com` to the one being added.
 - Change `SITES` variable from `custom-one.example.com` to the one being added. You can add multiple sites quoted in backtick (`) and separated by commas.
 - Change `BASE_SITE` variable from `one.example.com` to the one which is being pointed to.
-- Change `BENCH_NETWORK` variable from `erpnexus-one` to the one which was created with the bench.
+- Change `WRENCH_NETWORK` variable from `erpnexus-one` to the one which was created with the wrench.
 
 env file is generated at location mentioned in command.
 

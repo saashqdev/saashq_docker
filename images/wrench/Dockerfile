@@ -1,13 +1,13 @@
-FROM debian:bookworm-slim AS bench
+FROM debian:bookworm-slim AS wrench
 
-LABEL author=saashq
+LABEL author=saashqdev
 
-ARG GIT_REPO=https://github.com/saashqdev/bench.git
-ARG GIT_BRANCH=v5.x
+ARG GIT_REPO=https://github.com/saashqdev/wrench.git
+ARG GIT_BRANCH=main
 
 RUN apt-get update \
     && DEBIAN_FRONTEND=noninteractive apt-get install --no-install-recommends -y \
-    # For saashq framework
+    # For shq-framework
     git \
     mariadb-client \
     postgresql-client \
@@ -58,7 +58,7 @@ RUN apt-get update \
     make \
     # For pandas
     libbz2-dev \
-    # For bench execute
+    # For wrench execute
     libsqlite3-dev \
     # For other dependencies
     zlib1g-dev \
@@ -112,15 +112,15 @@ RUN git clone --depth 1 https://github.com/pyenv/pyenv.git .pyenv \
     && echo 'eval "$(pyenv init --path)"' >>~/.profile \
     && echo 'eval "$(pyenv init -)"' >>~/.bashrc
 
-# Clone and install bench in the local user home directory
-# For development, bench source is located in ~/.bench
+# Clone and install wrench in the local user home directory
+# For development, wrench source is located in ~/.wrench
 ENV PATH=/home/saashq/.local/bin:$PATH
-# Skip editable-bench warning
-# https://github.com/saashqdev/bench/commit/20560c97c4246b2480d7358c722bc9ad13606138
-RUN git clone ${GIT_REPO} --depth 1 -b ${GIT_BRANCH} .bench \
-    && pip install --no-cache-dir --user -e .bench \
+# Skip editable-wrench warning
+# https://github.com/saashqdev/wrench/commit/20560c97c4246b2480d7358c722bc9ad13606138
+RUN git clone ${GIT_REPO} --depth 1 -b ${GIT_BRANCH} .wrench \
+    && pip install --no-cache-dir --user -e .wrench \
     && echo "export PATH=/home/saashq/.local/bin:\$PATH" >>/home/saashq/.bashrc \
-    && echo "export BENCH_DEVELOPER=1" >>/home/saashq/.bashrc
+    && echo "export WRENCH_DEVELOPER=1" >>/home/saashq/.bashrc
 
 # Install Node via nvm
 ENV NODE_VERSION_14=16.20.2
@@ -145,7 +145,7 @@ RUN wget -qO- https://raw.githubusercontent.com/nvm-sh/nvm/v0.39.5/install.sh | 
 
 EXPOSE 8000-8005 9000-9005 6787
 
-FROM bench AS bench-test
+FROM wrench AS wrench-test
 
 # Print version and verify bashrc is properly sourced so that everything works
 # in the interactive shell and Dockerfile
@@ -153,9 +153,9 @@ FROM bench AS bench-test
 RUN node --version \
     && npm --version \
     && yarn --version \
-    && bench --help
+    && wrench --help
 
 RUN bash -c "node --version" \
     && bash -c "npm --version" \
     && bash -c "yarn --version" \
-    && bash -c "bench --help"
+    && bash -c "wrench --help"

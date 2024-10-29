@@ -5,10 +5,10 @@
   "version": "0.2.0",
   "configurations": [
     {
-      "name": "Bench Web",
+      "name": "Wrench Web",
       "type": "python",
       "request": "launch",
-      "program": "${workspaceFolder}/saashq-bench/apps/saashq/saashq/utils/bench_helper.py",
+      "program": "${workspaceFolder}/saashq-wrench/apps/saashq/saashq/utils/wrench_helper.py",
       "args": [
         "saashq",
         "serve",
@@ -17,32 +17,32 @@
         "--noreload",
         "--nothreading"
       ],
-      "pythonPath": "${workspaceFolder}/saashq-bench/env/bin/python",
-      "cwd": "${workspaceFolder}/saashq-bench/sites",
+      "pythonPath": "${workspaceFolder}/saashq-wrench/env/bin/python",
+      "cwd": "${workspaceFolder}/saashq-wrench/sites",
       "env": {
         "DEV_SERVER": "1"
       }
     },
     {
-      "name": "Bench Short Worker",
+      "name": "Wrench Short Worker",
       "type": "python",
       "request": "launch",
-      "program": "${workspaceFolder}/saashq-bench/apps/saashq/saashq/utils/bench_helper.py",
+      "program": "${workspaceFolder}/saashq-wrench/apps/saashq/saashq/utils/wrench_helper.py",
       "args": ["saashq", "worker", "--queue", "short"],
-      "pythonPath": "${workspaceFolder}/saashq-bench/env/bin/python",
-      "cwd": "${workspaceFolder}/saashq-bench/sites",
+      "pythonPath": "${workspaceFolder}/saashq-wrench/env/bin/python",
+      "cwd": "${workspaceFolder}/saashq-wrench/sites",
       "env": {
         "DEV_SERVER": "1"
       }
     },
     {
-      "name": "Bench Long Worker",
+      "name": "Wrench Long Worker",
       "type": "python",
       "request": "launch",
-      "program": "${workspaceFolder}/saashq-bench/apps/saashq/saashq/utils/bench_helper.py",
+      "program": "${workspaceFolder}/saashq-wrench/apps/saashq/saashq/utils/wrench_helper.py",
       "args": ["saashq", "worker", "--queue", "long"],
-      "pythonPath": "${workspaceFolder}/saashq-bench/env/bin/python",
-      "cwd": "${workspaceFolder}/saashq-bench/sites",
+      "pythonPath": "${workspaceFolder}/saashq-wrench/env/bin/python",
+      "cwd": "${workspaceFolder}/saashq-wrench/sites",
       "env": {
         "DEV_SERVER": "1"
       }
@@ -52,8 +52,8 @@
       "type": "python",
       "request": "launch",
       "program": "/home/saashq/.local/bin/honcho",
-      "pythonPath": "${workspaceFolder}/saashq-bench/env/bin/python",
-      "cwd": "${workspaceFolder}/saashq-bench",
+      "pythonPath": "${workspaceFolder}/saashq-wrench/env/bin/python",
+      "cwd": "${workspaceFolder}/saashq-wrench",
       "console": "internalConsole",
       "args": [
         "start",

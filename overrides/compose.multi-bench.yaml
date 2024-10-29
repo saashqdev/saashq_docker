@@ -2,7 +2,7 @@ services:
   frontend:
     networks:
       - traefik-public
-      - bench-network
+      - wrench-network
     labels:
       - traefik.enable=true
       - traefik.docker.network=traefik-public
@@ -12,36 +12,36 @@ services:
       - traefik.http.routers.${ROUTER}-http.rule=Host(${SITES?SITES not set})
   configurator:
     networks:
-      - bench-network
+      - wrench-network
       - mariadb-network
   backend:
     networks:
       - mariadb-network
-      - bench-network
+      - wrench-network
   websocket:
     networks:
-      - bench-network
+      - wrench-network
       - mariadb-network
   scheduler:
     networks:
-      - bench-network
+      - wrench-network
       - mariadb-network
   queue-short:
     networks:
-      - bench-network
+      - wrench-network
       - mariadb-network
   queue-long:
     networks:
-      - bench-network
+      - wrench-network
       - mariadb-network
   redis-cache:
     networks:
-      - bench-network
+      - wrench-network
       - mariadb-network
 
   redis-queue:
     networks:
-      - bench-network
+      - wrench-network
       - mariadb-network
 
 networks:
@@ -49,6 +49,6 @@ networks:
     external: true
   mariadb-network:
     external: true
-  bench-network:
+  wrench-network:
     name: ${ROUTER}
     external: false

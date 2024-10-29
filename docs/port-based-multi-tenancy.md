@@ -26,7 +26,7 @@ services:
       SAASHQ_SITE_NAME_HEADER: site1.local
       SOCKETIO: websocket:9000
     volumes:
-      - sites:/home/saashq/saashq-bench/sites
+      - sites:/home/saashq/saashq-wrench/sites
     ports:
       - "8080:8080"
   port-site-2:
@@ -41,7 +41,7 @@ services:
       SAASHQ_SITE_NAME_HEADER: site2.local
       SOCKETIO: websocket:9000
     volumes:
-      - sites:/home/saashq/saashq-bench/sites
+      - sites:/home/saashq/saashq-wrench/sites
     ports:
       - "8081:8080"
   port-site-3:
@@ -56,7 +56,7 @@ services:
       SAASHQ_SITE_NAME_HEADER: site3.local
       SOCKETIO: websocket:9000
     volumes:
-      - sites:/home/saashq/saashq-bench/sites
+      - sites:/home/saashq/saashq-wrench/sites
     ports:
       - "8082:8080"
 ```
@@ -64,6 +64,6 @@ services:
 Notes:
 
 - Above setup will expose `site1.local`, `site2.local`, `site3.local` on port `8080`, `8081`, `8082` respectively.
-- Change `site1.local` to site name to serve from bench.
+- Change `site1.local` to site name to serve from wrench.
 - Change the `BACKEND` and `SOCKETIO` environment variables as per your service names.
 - Make sure `sites:` volume is available as part of yaml.

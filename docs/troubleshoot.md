@@ -8,7 +8,7 @@ For any reason after rebuilding the container if you are not be able to access M
 
 The parameter `'db_name'@'%'` needs to be set in MariaDB and permission to the site database suitably assigned to the user.
 
-This step has to be repeated for all sites available under the current bench.
+This step has to be repeated for all sites available under the current wrench.
 Example shows the queries to be executed for site `localhost`
 
 Open sites/localhost/site_config.json:

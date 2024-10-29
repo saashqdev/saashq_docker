@@ -29,8 +29,8 @@ def cprint(*args, level: int = 1):
 def main():
     parser = get_args_parser()
     args = parser.parse_args()
-    init_bench_if_not_exist(args)
-    create_site_in_bench(args)
+    init_wrench_if_not_exist(args)
+    create_site_in_wrench(args)
 
 
 def get_args_parser():
@@ -45,11 +45,11 @@ def get_args_parser():
     )  # noqa: E501
     parser.add_argument(
         "-b",
-        "--bench-name",
+        "--wrench-name",
         action="store",
         type=str,
-        help="Bench directory name, default: saashq-bench",
-        default="saashq-bench",
+        help="Wrench directory name, default: saashq-wrench",
+        default="saashq-wrench",
     )  # noqa: E501
     parser.add_argument(
         "-s",
@@ -116,9 +116,9 @@ def get_args_parser():
     return parser
 
 
-def init_bench_if_not_exist(args):
-    if os.path.exists(args.bench_name):
-        cprint("Bench already exists. Only site will be created", level=3)
+def init_wrench_if_not_exist(args):
+    if os.path.exists(args.wrench_name):
+        cprint("Wrench already exists. Only site will be created", level=3)
         return
     try:
         env = os.environ.copy()
@@ -129,13 +129,13 @@ def init_bench_if_not_exist(args):
             init_command = f"nvm use {args.node_version};"
         if args.py_version:
             init_command += f"PYENV_VERSION={args.py_version} "
-        init_command += "bench init "
+        init_command += "wrench init "
         init_command += "--skip-redis-config-generation "
         init_command += "--verbose " if args.verbose else " "
         init_command += f"--saashq-path={args.saashq_repo} "
         init_command += f"--saashq-branch={args.saashq_branch} "
         init_command += f"--apps_path={args.apps_json} "
-        init_command += args.bench_name
+        init_command += args.wrench_name
         command = [
             "/bin/bash",
             "-i",
@@ -143,36 +143,36 @@ def init_bench_if_not_exist(args):
             init_command,
         ]
         subprocess.call(command, env=env, cwd=os.getcwd())
-        cprint("Configuring Bench ...", level=2)
+        cprint("Configuring Wrench ...", level=2)
         cprint("Set db_host", level=3)
         if args.db_type:
             cprint(f"Setting db_type to {args.db_type}", level=3)
             subprocess.call(
-                ["bench", "set-config", "-g", "db_type", args.db_type],
-                cwd=os.path.join(os.getcwd(), args.bench_name),
+                ["wrench", "set-config", "-g", "db_type", args.db_type],
+                cwd=os.path.join(os.getcwd(), args.wrench_name),
             )
 
         cprint("Set redis_cache to redis://redis-cache:6379", level=3)
         subprocess.call(
             [
-                "bench",
+                "wrench",
                 "set-config",
                 "-g",
                 "redis_cache",
                 "redis://redis-cache:6379",
             ],
-            cwd=os.getcwd() + "/" + args.bench_name,
+            cwd=os.getcwd() + "/" + args.wrench_name,
         )
         cprint("Set redis_queue to redis://redis-queue:6379", level=3)
         subprocess.call(
             [
-                "bench",
+                "wrench",
                 "set-config",
                 "-g",
                 "redis_queue",
                 "redis://redis-queue:6379",
             ],
-            cwd=os.getcwd() + "/" + args.bench_name,
+            cwd=os.getcwd() + "/" + args.wrench_name,
         )
         cprint(
             "Set redis_socketio to redis://redis-queue:6379 for backward compatibility",  # noqa: E501
@@ -180,32 +180,32 @@ def init_bench_if_not_exist(args):
         )
         subprocess.call(
             [
-                "bench",
+                "wrench",
                 "set-config",
                 "-g",
                 "redis_socketio",
                 "redis://redis-queue:6379",
             ],
-            cwd=os.getcwd() + "/" + args.bench_name,
+            cwd=os.getcwd() + "/" + args.wrench_name,
         )
         cprint("Set developer_mode", level=3)
         subprocess.call(
-            ["bench", "set-config", "-gp", "developer_mode", "1"],
-            cwd=os.getcwd() + "/" + args.bench_name,
+            ["wrench", "set-config", "-gp", "developer_mode", "1"],
+            cwd=os.getcwd() + "/" + args.wrench_name,
         )
     except subprocess.CalledProcessError as e:
         cprint(e.output, level=1)
 
 
-def create_site_in_bench(args):
+def create_site_in_wrench(args):
     if "mariadb" == args.db_type:
         cprint("Set db_host", level=3)
         subprocess.call(
-            ["bench", "set-config", "-g", "db_host", "mariadb"],
-            cwd=os.getcwd() + "/" + args.bench_name,
+            ["wrench", "set-config", "-g", "db_host", "mariadb"],
+            cwd=os.getcwd() + "/" + args.wrench_name,
         )
         new_site_cmd = [
-            "bench",
+            "wrench",
             "new-site",
             f"--db-host=mariadb",  # Should match the compose service name
             f"--db-type={args.db_type}",  # Add the selected database type
@@ -216,18 +216,18 @@ def create_site_in_bench(args):
     else:
         cprint("Set db_host", level=3)
         subprocess.call(
-            ["bench", "set-config", "-g", "db_host", "postgresql"],
-            cwd=os.getcwd() + "/" + args.bench_name,
+            ["wrench", "set-config", "-g", "db_host", "postgresql"],
+            cwd=os.getcwd() + "/" + args.wrench_name,
         )
         new_site_cmd = [
-            "bench",
+            "wrench",
             "new-site",
             f"--db-host=postgresql",  # Should match the compose service name
             f"--db-type={args.db_type}",  # Add the selected database type
             f"--db-root-password=123",  # Replace with your PostgreSQL password
             f"--admin-password={args.admin_password}",
         ]
-    apps = os.listdir(f"{os.getcwd()}/{args.bench_name}/apps")
+    apps = os.listdir(f"{os.getcwd()}/{args.wrench_name}/apps")
     apps.remove("saashq")
     for app in apps:
         new_site_cmd.append(f"--install-app={app}")
@@ -235,7 +235,7 @@ def create_site_in_bench(args):
     cprint(f"Creating Site {args.site_name} ...", level=2)
     subprocess.call(
         new_site_cmd,
-        cwd=os.getcwd() + "/" + args.bench_name,
+        cwd=os.getcwd() + "/" + args.wrench_name,
     )
 
 

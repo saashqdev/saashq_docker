@@ -2,14 +2,14 @@
 
 There are 3 images that you can find in `/images` directory:
 
-- `bench`. It is used for development. [Learn more how to start development](../development/README.md).
+- `wrench`. It is used for development. [Learn more how to start development](../development/README.md).
 - `production`.
-  - Multi-purpose Python backend. Runs [Werkzeug server](https://werkzeug.palletsprojects.com/en/2.0.x/) with [gunicorn](https://gunicorn.org), queues (via `bench worker`), or schedule (via `bench schedule`).
+  - Multi-purpose Python backend. Runs [Werkzeug server](https://werkzeug.palletsprojects.com/en/2.0.x/) with [gunicorn](https://gunicorn.org), queues (via `wrench worker`), or schedule (via `wrench schedule`).
   - Contains JS and CSS assets and routes incoming requests using [nginx](https://www.nginx.com).
   - Processes realtime websocket requests using [Socket.IO](https://socket.io).
-- `custom`. It is used to build bench using `apps.json` file set with `--apps_path` during bench initialization. `apps.json` is a json array. e.g. `[{"url":"{{repo_url}}","branch":"{{repo_branch}}"}]`
+- `custom`. It is used to build wrench using `apps.json` file set with `--apps_path` during wrench initialization. `apps.json` is a json array. e.g. `[{"url":"{{repo_url}}","branch":"{{repo_branch}}"}]`
 
-Image has everything we need to be able to run all processes that Saashq framework requires (take a look at [Bench Procfile reference](https://saashqframework.com/docs/v14/user/en/bench/resources/bench-procfile)). We follow [Docker best practices](https://docs.docker.com/develop/develop-images/dockerfile_best-practices/#decouple-applications) and split these processes to different containers.
+Image has everything we need to be able to run all processes that Saashq framework requires (take a look at [Wrench Procfile reference](https://saashqframework.com/docs/v14/user/en/wrench/resources/wrench-procfile)). We follow [Docker best practices](https://docs.docker.com/develop/develop-images/dockerfile_best-practices/#decouple-applications) and split these processes to different containers.
 
 > We use [multi-stage builds](https://docs.docker.com/develop/develop-images/multistage-build/) and [Docker Buildx](https://docs.docker.com/engine/reference/commandline/buildx/) to reuse as much things as possible and make our builds more efficient.
 

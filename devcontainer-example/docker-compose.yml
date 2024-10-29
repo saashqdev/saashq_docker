@@ -45,7 +45,7 @@ services:
     platform: linux/amd64
 
   saashq:
-    image: docker.io/saashqdev/bench:latest
+    image: docker.io/saashqdev/wrench:latest
     platform: linux/amd64
     command: sleep infinity
     environment:

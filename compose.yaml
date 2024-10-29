@@ -13,7 +13,7 @@ x-depends-on-configurator: &depends_on_configurator
 x-backend-defaults: &backend_defaults
   <<: [*depends_on_configurator, *customizable_image]
   volumes:
-    - sites:/home/saashq/saashq-bench/sites
+    - sites:/home/saashq/saashq-wrench/sites
 
 services:
   configurator:
@@ -26,12 +26,12 @@ services:
     command:
       - >
         ls -1 apps > sites/apps.txt;
-        bench set-config -g db_host $$DB_HOST;
-        bench set-config -gp db_port $$DB_PORT;
-        bench set-config -g redis_cache "redis://$$REDIS_CACHE";
-        bench set-config -g redis_queue "redis://$$REDIS_QUEUE";
-        bench set-config -g redis_socketio "redis://$$REDIS_QUEUE";
-        bench set-config -gp socketio_port $$SOCKETIO_PORT;
+        wrench set-config -g db_host $$DB_HOST;
+        wrench set-config -gp db_port $$DB_PORT;
+        wrench set-config -g redis_cache "redis://$$REDIS_CACHE";
+        wrench set-config -g redis_queue "redis://$$REDIS_QUEUE";
+        wrench set-config -g redis_socketio "redis://$$REDIS_QUEUE";
+        wrench set-config -gp socketio_port $$SOCKETIO_PORT;
     environment:
       DB_HOST: ${DB_HOST:-}
       DB_PORT: ${DB_PORT:-}
@@ -59,7 +59,7 @@ services:
       PROXY_READ_TIMEOUT: ${PROXY_READ_TIMEOUT:-120}
       CLIENT_MAX_BODY_SIZE: ${CLIENT_MAX_BODY_SIZE:-50m}
     volumes:
-      - sites:/home/saashq/saashq-bench/sites
+      - sites:/home/saashq/saashq-wrench/sites
     depends_on:
       - backend
       - websocket
@@ -69,24 +69,24 @@ services:
     platform: linux/amd64
     command:
       - node
-      - /home/saashq/saashq-bench/apps/saashq/socketio.js
+      - /home/saashq/saashq-wrench/apps/saashq/socketio.js
     volumes:
-      - sites:/home/saashq/saashq-bench/sites
+      - sites:/home/saashq/saashq-wrench/sites
 
   queue-short:
     <<: *backend_defaults
     platform: linux/amd64
-    command: bench worker --queue short,default
+    command: wrench worker --queue short,default
 
   queue-long:
     <<: *backend_defaults
     platform: linux/amd64
-    command: bench worker --queue long,default,short
+    command: wrench worker --queue long,default,short
 
   scheduler:
     <<: *backend_defaults
     platform: linux/amd64
-    command: bench schedule
+    command: wrench schedule
 
 # ERPNexus requires local assets access (Saashq does not)
 volumes:

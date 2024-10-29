@@ -1,3 +1,3 @@
 {
-  "python.defaultInterpreterPath": "${workspaceFolder}/saashq-bench/env/bin/python"
+  "python.defaultInterpreterPath": "${workspaceFolder}/saashq-wrench/env/bin/python"
 }

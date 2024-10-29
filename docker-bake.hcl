@@ -28,31 +28,31 @@ variable "ERPNEXUS_REPO" {
     default = "https://github.com/saashqdev/erpnexus"
 }
 
-variable "BENCH_REPO" {
-    default = "https://github.com/saashqdev/bench"
+variable "WRENCH_REPO" {
+    default = "https://github.com/saashqdev/wrench"
 }
 
-variable "LATEST_BENCH_RELEASE" {
+variable "LATEST_WRENCH_RELEASE" {
     default = "latest"
 }
 
-# Bench image
+# Wrench image
 
-target "bench" {
+target "wrench" {
     args = {
-        GIT_REPO = "${BENCH_REPO}"
+        GIT_REPO = "${WRENCH_REPO}"
     }
-    context = "images/bench"
-    target = "bench"
+    context = "images/wrench"
+    target = "wrench"
     tags = [
-        "saashq/bench:${LATEST_BENCH_RELEASE}",
-        "saashq/bench:latest",
+        "saashq/wrench:${LATEST_WRENCH_RELEASE}",
+        "saashq/wrench:latest",
     ]
 }
 
-target "bench-test" {
-    inherits = ["bench"]
-    target = "bench-test"
+target "wrench-test" {
+    inherits = ["wrench"]
+    target = "wrench-test"
 }
 
 # Main images
@@ -78,7 +78,7 @@ target "default-args" {
     args = {
         SAASHQ_PATH = "${SAASHQ_REPO}"
         ERPNEXUS_PATH = "${ERPNEXUS_REPO}"
-        BENCH_REPO = "${BENCH_REPO}"
+        WRENCH_REPO = "${WRENCH_REPO}"
         SAASHQ_BRANCH = "${SAASHQ_VERSION}"
         ERPNEXUS_BRANCH = "${ERPNEXUS_VERSION}"
         PYTHON_VERSION = "${PYTHON_VERSION}"

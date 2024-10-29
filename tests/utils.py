@@ -52,8 +52,8 @@ class Compose:
         with suppress(subprocess.CalledProcessError):
             subprocess.check_call(self.base_cmd + ("down", "-v", "--remove-orphans"))
 
-    def bench(self, *cmd: str) -> None:
-        self.exec("backend", "bench", *cmd)
+    def wrench(self, *cmd: str) -> None:
+        self.exec("backend", "wrench", *cmd)
 
 
 def check_url_content(

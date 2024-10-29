@@ -1,10 +1,10 @@
 # Single Compose Setup
 
-This setup is a very simple single compose file that does everything to start required services and a saashq-bench. It is used to start play with docker instance with a site. The file is located in the root of repo and named `pwd.yml`.
+This setup is a very simple single compose file that does everything to start required services and a saashq-wrench. It is used to start play with docker instance with a site. The file is located in the root of repo and named `pwd.yml`.
 
 ## Services
 
-### saashq-bench components
+### saashq-wrench components
 
 - backend, serves gunicorn backend
 - frontend, serves static assets through nginx frontend reverse proxies websocket and gunicorn.
@@ -16,7 +16,7 @@ This setup is a very simple single compose file that does everything to start re
 ### Run once configuration
 
 - configurator, configures `common_site_config.json` to set db and redis hosts.
-- create-site, creates one site to serve as default site for the saashq-bench.
+- create-site, creates one site to serve as default site for the saashq-wrench.
 
 ### Service dependencies
 
@@ -26,8 +26,8 @@ This setup is a very simple single compose file that does everything to start re
 
 ## Volumes
 
-- sites: Volume for bench data. Common config, all sites, all site configs and site files will be stored here.
-- logs: Volume for bench logs. all process logs are dumped here. No need to mount it. Each container will create a temporary volume for logs if not specified.
+- sites: Volume for wrench data. Common config, all sites, all site configs and site files will be stored here.
+- logs: Volume for wrench logs. all process logs are dumped here. No need to mount it. Each container will create a temporary volume for logs if not specified.
 
 ## Adaptation
 

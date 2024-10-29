@@ -21,11 +21,11 @@ services:
       - traefik.http.routers.${ROUTER}.middlewares=${ROUTER}
     networks:
       - traefik-public
-      - bench-network
+      - wrench-network
 
 networks:
   traefik-public:
     external: true
-  bench-network:
-    name: ${BENCH_NETWORK?BENCH_NETWORK not set}
+  wrench-network:
+    name: ${WRENCH_NETWORK?WRENCH_NETWORK not set}
     external: true

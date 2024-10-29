@@ -21,8 +21,8 @@ services:
       restart_policy:
         condition: on-failure
     volumes:
-      - sites:/home/saashq/saashq-bench/sites
-      - logs:/home/saashq/saashq-bench/logs
+      - sites:/home/saashq/saashq-wrench/sites
+      - logs:/home/saashq/saashq-wrench/logs
 
   configurator:
     image: saashqdev/erpnexus:v15
@@ -37,12 +37,12 @@ services:
     command:
       - >
         ls -1 apps > sites/apps.txt;
-        bench set-config -g db_host $$DB_HOST;
-        bench set-config -gp db_port $$DB_PORT;
-        bench set-config -g redis_cache "redis://$$REDIS_CACHE";
-        bench set-config -g redis_queue "redis://$$REDIS_QUEUE";
-        bench set-config -g redis_socketio "redis://$$REDIS_QUEUE";
-        bench set-config -gp socketio_port $$SOCKETIO_PORT;
+        wrench set-config -g db_host $$DB_HOST;
+        wrench set-config -gp db_port $$DB_PORT;
+        wrench set-config -g redis_cache "redis://$$REDIS_CACHE";
+        wrench set-config -g redis_queue "redis://$$REDIS_QUEUE";
+        wrench set-config -g redis_socketio "redis://$$REDIS_QUEUE";
+        wrench set-config -gp socketio_port $$SOCKETIO_PORT;
     environment:
       DB_HOST: db
       DB_PORT: "3306"
@@ -50,8 +50,8 @@ services:
       REDIS_QUEUE: redis-queue:6379
       SOCKETIO_PORT: "9000"
     volumes:
-      - sites:/home/saashq/saashq-bench/sites
-      - logs:/home/saashq/saashq-bench/logs
+      - sites:/home/saashq/saashq-wrench/sites
+      - logs:/home/saashq/saashq-wrench/logs
 
   create-site:
     image: saashqdev/erpnexus:v15
@@ -60,8 +60,8 @@ services:
       restart_policy:
         condition: none
     volumes:
-      - sites:/home/saashq/saashq-bench/sites
-      - logs:/home/saashq/saashq-bench/logs
+      - sites:/home/saashq/saashq-wrench/sites
+      - logs:/home/saashq/saashq-wrench/logs
     entrypoint:
       - bash
       - -c
@@ -83,7 +83,7 @@ services:
           fi
         done;
         echo "sites/common_site_config.json found";
-        bench new-site --no-mariadb-socket --admin-password=admin --db-root-password=admin --install-app erpnexus --set-default frontend;
+        wrench new-site --no-mariadb-socket --admin-password=admin --db-root-password=admin --install-app erpnexus --set-default frontend;
 
   db:
     image: mariadb:10.6
@@ -125,8 +125,8 @@ services:
       PROXY_READ_TIMEOUT: 120
       CLIENT_MAX_BODY_SIZE: 50m
     volumes:
-      - sites:/home/saashq/saashq-bench/sites
-      - logs:/home/saashq/saashq-bench/logs
+      - sites:/home/saashq/saashq-wrench/sites
+      - logs:/home/saashq/saashq-wrench/logs
     ports:
       - "8080:8080"
 
@@ -137,13 +137,13 @@ services:
       restart_policy:
         condition: on-failure
     command:
-      - bench
+      - wrench
       - worker
       - --queue
       - long,default,short
     volumes:
-      - sites:/home/saashq/saashq-bench/sites
-      - logs:/home/saashq/saashq-bench/logs
+      - sites:/home/saashq/saashq-wrench/sites
+      - logs:/home/saashq/saashq-wrench/logs
 
   queue-short:
     image: saashqdev/erpnexus:v15
@@ -152,13 +152,13 @@ services:
       restart_policy:
         condition: on-failure
     command:
-      - bench
+      - wrench
       - worker
       - --queue
       - short,default
     volumes:
-      - sites:/home/saashq/saashq-bench/sites
-      - logs:/home/saashq/saashq-bench/logs
+      - sites:/home/saashq/saashq-wrench/sites
+      - logs:/home/saashq/saashq-wrench/logs
 
   redis-queue:
     image: redis:6.2-alpine
@@ -185,11 +185,11 @@ services:
       restart_policy:
         condition: on-failure
     command:
-      - bench
+      - wrench
       - schedule
     volumes:
-      - sites:/home/saashq/saashq-bench/sites
-      - logs:/home/saashq/saashq-bench/logs
+      - sites:/home/saashq/saashq-wrench/sites
+      - logs:/home/saashq/saashq-wrench/logs
 
   websocket:
     image: saashqdev/erpnexus:v15
@@ -199,10 +199,10 @@ services:
         condition: on-failure
     command:
       - node
-      - /home/saashq/saashq-bench/apps/saashq/socketio.js
+      - /home/saashq/saashq-wrench/apps/saashq/socketio.js
     volumes:
-      - sites:/home/saashq/saashq-bench/sites
-      - logs:/home/saashq/saashq-bench/logs
+      - sites:/home/saashq/saashq-wrench/sites
+      - logs:/home/saashq/saashq-wrench/logs
 
 volumes:
   db-data:

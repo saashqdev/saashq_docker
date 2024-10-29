@@ -8,7 +8,7 @@ Now you need to specify command and environment variables for following containe
 
 For `frontend` service to act as static assets frontend and reverse proxy, you need to pass `nginx-entrypoint.sh` as container `command` and `BACKEND` and `SOCKETIO` environment variables pointing `{host}:{port}` for gunicorn and websocket services. Check [environment variables](environment-variables.md)
 
-Now you only need to mount the `sites` volume at location `/home/saashq/saashq-bench/sites`. No need for `assets` volume and asset population script or steps.
+Now you only need to mount the `sites` volume at location `/home/saashq/saashq-wrench/sites`. No need for `assets` volume and asset population script or steps.
 
 Example change:
 
@@ -22,13 +22,13 @@ frontend:
     BACKEND: backend:8000
     SOCKETIO: websocket:9000
   volumes:
-    - sites:/home/saashq/saashq-bench/sites
+    - sites:/home/saashq/saashq-wrench/sites
 # ... removed for brevity
 ```
 
 ### Websocket
 
-For `websocket` service to act as socketio backend, you need to pass `["node", "/home/saashq/saashq-bench/apps/saashq/socketio.js"]` as container `command`
+For `websocket` service to act as socketio backend, you need to pass `["node", "/home/saashq/saashq-wrench/apps/saashq/socketio.js"]` as container `command`
 
 Example change:
 
@@ -38,7 +38,7 @@ websocket:
   image: saashqdev/erpnexus:${ERPNEXUS_VERSION:?ERPNexus version not set}
   command:
     - node
-    - /home/saashq/saashq-bench/apps/saashq/socketio.js
+    - /home/saashq/saashq-wrench/apps/saashq/socketio.js
 # ... removed for brevity
 ```
 
@@ -58,11 +58,11 @@ configurator:
     - -c
   command:
     - >
-      bench set-config -g db_host $$DB_HOST;
-      bench set-config -gp db_port $$DB_PORT;
-      bench set-config -g redis_cache "redis://$$REDIS_CACHE";
-      bench set-config -g redis_queue "redis://$$REDIS_QUEUE";
-      bench set-config -gp socketio_port $$SOCKETIO_PORT;
+      wrench set-config -g db_host $$DB_HOST;
+      wrench set-config -gp db_port $$DB_PORT;
+      wrench set-config -g redis_cache "redis://$$REDIS_CACHE";
+      wrench set-config -g redis_queue "redis://$$REDIS_QUEUE";
+      wrench set-config -gp socketio_port $$SOCKETIO_PORT;
   environment:
     DB_HOST: db
     DB_PORT: "3306"
@@ -74,9 +74,9 @@ configurator:
 
 ### Site Creation
 
-For `create-site` service to act as run once site creation job, you need to pass `["bash", "-c"]` as container `entrypoint` and bash script inline to yaml. Make sure to use `--no-mariadb-socket` as upstream bench is installed in container.
+For `create-site` service to act as run once site creation job, you need to pass `["bash", "-c"]` as container `entrypoint` and bash script inline to yaml. Make sure to use `--no-mariadb-socket` as upstream wrench is installed in container.
 
-The `WORKDIR` has changed to `/home/saashq/saashq-bench` like `bench` setup we are used to. So the path to find `common_site_config.json` has changed to `sites/common_site_config.json`.
+The `WORKDIR` has changed to `/home/saashq/saashq-wrench` like `wrench` setup we are used to. So the path to find `common_site_config.json` has changed to `sites/common_site_config.json`.
 
 Example change:
 
@@ -106,7 +106,7 @@ create-site:
         fi
       done;
       echo "sites/common_site_config.json found";
-      bench new-site --no-mariadb-socket --admin-password=admin --db-root-password=admin --install-app erpnexus --set-default frontend;
+      wrench new-site --no-mariadb-socket --admin-password=admin --db-root-password=admin --install-app erpnexus --set-default frontend;
 
 # ... removed for brevity
 ```
