@@ -74,7 +74,7 @@ FROM base AS build
 
 RUN apt-get update \
     && DEBIAN_FRONTEND=noninteractive apt-get install --no-install-recommends -y \
-    # For saashq framework
+    # For saashq
     wget \
     # For psycopg2
     libpq-dev \
@@ -101,7 +101,7 @@ USER saashq
 FROM build AS builder
 
 ARG SAASHQ_BRANCH=main
-ARG SAASHQ_PATH=https://github.com/saashqdev/shq-framework
+ARG SAASHQ_PATH=https://github.com/saashqdev/saashq
 ARG ERPNEXUS_REPO=https://github.com/saashqdev/erpnexus
 ARG ERPNEXUS_BRANCH=main
 RUN wrench init \

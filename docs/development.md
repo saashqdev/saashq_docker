@@ -263,7 +263,7 @@ options:
   -s SITE_NAME, --site-name SITE_NAME
                         Site name, should end with .localhost, default: development.localhost
   -r SAASHQ_REPO, --saashq-repo SAASHQ_REPO
-                        saashq repo to use, default: https://github.com/saashqdev/shq-framework
+                        saashq repo to use, default: https://github.com/saashqdev/saashq
   -t SAASHQ_BRANCH, --saashq-branch SAASHQ_BRANCH
                         saashq repo to use, default: version-15
   -p PY_VERSION, --py-version PY_VERSION

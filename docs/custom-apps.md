@@ -56,7 +56,7 @@ cd saashq_docker
 
 Common build args.
 
-- `SAASHQ_PATH`, customize the source repo for saashq framework. Defaults to `https://github.com/saashqdev/shq-framework`
+- `SAASHQ_PATH`, customize the source repo for saashq framework. Defaults to `https://github.com/saashqdev/saashq`
 - `SAASHQ_BRANCH`, customize the source repo branch for saashq framework. Defaults to `version-15`.
 - `APPS_JSON_BASE64`, correct base64 encoded JSON string generated from `apps.json` file.
 
@@ -75,7 +75,7 @@ It uses `images/layered/Containerfile`.
 
 ```shell
 docker build \
-  --build-arg=SAASHQ_PATH=https://github.com/saashqdev/shq-framework \
+  --build-arg=SAASHQ_PATH=https://github.com/saashqdev/saashq \
   --build-arg=SAASHQ_BRANCH=main \
   --build-arg=APPS_JSON_BASE64=$APPS_JSON_BASE64 \
   --tag=ghcr.io/user/repo/custom:1.0.0 \
@@ -90,7 +90,7 @@ It uses `images/custom/Containerfile`.
 
 ```shell
 docker build \
-  --build-arg=SAASHQ_PATH=https://github.com/saashqdev/shq-framework \
+  --build-arg=SAASHQ_PATH=https://github.com/saashqdev/saashq \
   --build-arg=SAASHQ_BRANCH=main \
   --build-arg=PYTHON_VERSION=3.11.9 \
   --build-arg=NODE_VERSION=18.20.2 \

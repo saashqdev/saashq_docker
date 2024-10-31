@@ -2,7 +2,7 @@
 # Reference: https://github.com/docker/buildx/blob/master/docs/reference/buildx_bake.md
 
 variable "REGISTRY_USER" {
-    default = "saashq"
+    default = "saashqdev"
 }
 
 variable PYTHON_VERSION {
@@ -21,7 +21,7 @@ variable "ERPNEXUS_VERSION" {
 }
 
 variable "SAASHQ_REPO" {
-    default = "https://github.com/saashqdev/shq-framework"
+    default = "https://github.com/saashqdev/saashq"
 }
 
 variable "ERPNEXUS_REPO" {
@@ -45,8 +45,8 @@ target "wrench" {
     context = "images/wrench"
     target = "wrench"
     tags = [
-        "saashq/wrench:${LATEST_WRENCH_RELEASE}",
-        "saashq/wrench:latest",
+        "saashqdev/wrench:${LATEST_WRENCH_RELEASE}",
+        "saashqdev/wrench:latest",
     ]
 }
 

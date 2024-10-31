@@ -113,7 +113,7 @@ RUN if [ -n "${APPS_JSON_BASE64}" ]; then \
 USER saashq
 
 ARG SAASHQ_BRANCH=main
-ARG SAASHQ_PATH=https://github.com/saashqdev/shq-framework
+ARG SAASHQ_PATH=https://github.com/saashqdev/saashq
 RUN export APP_INSTALL_ARGS="" && \
   if [ -n "${APPS_JSON_BASE64}" ]; then \
     export APP_INSTALL_ARGS="--apps_path=/opt/saashq/apps.json"; \

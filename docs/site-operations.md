@@ -41,7 +41,7 @@ Note that you can restore backup only manually.
 
 Editing config manually might be required in some cases,
 one such case is to use Amazon RDS (or any other DBaaS).
-For full instructions, refer to the [wiki](<https://github.com/saashqdev/shq-framework/wiki/Using-Saashq-with-Amazon-RDS-(or-any-other-DBaaS)>). Common question can be found in Issues and on forum.
+For full instructions, refer to the [wiki](<https://github.com/saashqdev/saashq/wiki/Using-Saashq-with-Amazon-RDS-(or-any-other-DBaaS)>). Common question can be found in Issues and on forum.
 
 `common_site_config.json` or `site_config.json` from `sites` volume has to be edited using following command:
 

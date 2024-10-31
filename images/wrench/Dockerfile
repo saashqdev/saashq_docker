@@ -7,7 +7,7 @@ ARG GIT_BRANCH=main
 
 RUN apt-get update \
     && DEBIAN_FRONTEND=noninteractive apt-get install --no-install-recommends -y \
-    # For shq-framework
+    # For saashq
     git \
     mariadb-client \
     postgresql-client \

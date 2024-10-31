@@ -1,7 +1,7 @@
 [![Build Stable](https://github.com/saashqdev/saashq_docker/actions/workflows/build_stable.yml/badge.svg)](https://github.com/saashqdev/saashq_docker/actions/workflows/build_stable.yml)
 [![Build Develop](https://github.com/saashqdev/saashq_docker/actions/workflows/build_develop.yml/badge.svg)](https://github.com/saashqdev/saashq_docker/actions/workflows/build_develop.yml)
 
-Everything about [Saashq](https://github.com/saashqdev/shq-framework) and [ERPNexus](https://github.com/saashqdev/erpnexus) in containers.
+Everything about [Saashq](https://github.com/saashqdev/saashq) and [ERPNexus](https://github.com/saashqdev/erpnexus) in containers.
 
 # Getting Started
 
@@ -70,6 +70,6 @@ If you want to contribute to this repo refer to [CONTRIBUTING.md](CONTRIBUTING.m
 
 This repository is only for container related stuff. You also might want to contribute to:
 
-- [Saashq framework](https://github.com/saashqdev/shq-framework#contributing),
+- [Saashq framework](https://github.com/saashqdev/saashq#contributing),
 - [ERPNexus](https://github.com/saashqdev/erpnexus#contributing),
 - [Saashq Wrench](https://github.com/saashqdev/wrench).

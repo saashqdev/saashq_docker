@@ -3,7 +3,7 @@ ARG SAASHQ_BRANCH=main
 FROM saashq/build:${SAASHQ_BRANCH} AS builder
 
 ARG SAASHQ_BRANCH=main
-ARG SAASHQ_PATH=https://github.com/saashqdev/shq-framework
+ARG SAASHQ_PATH=https://github.com/saashqdev/saashq
 ARG APPS_JSON_BASE64
 
 USER root

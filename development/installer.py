@@ -64,8 +64,8 @@ def get_args_parser():
         "--saashq-repo",
         action="store",
         type=str,
-        help="saashq repo to use, default: https://github.com/saashqdev/shq-framework",  # noqa: E501
-        default="https://github.com/saashqdev/shq-framework",
+        help="saashq repo to use, default: https://github.com/saashqdev/saashq",  # noqa: E501
+        default="https://github.com/saashqdev/saashq",
     )
     parser.add_argument(
         "-t",

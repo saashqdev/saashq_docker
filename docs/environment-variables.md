@@ -19,7 +19,7 @@ We use environment variables to configure our setup. docker-compose uses variabl
 
 ### `SAASHQ_VERSION`
 
-Saashq framework release. You can find all releases [here](https://github.com/saashqdev/shq-framework/releases).
+Saashq framework release. You can find all releases [here](https://github.com/saashqdev/saashq/releases).
 
 ### `DB_PASSWORD`
 
