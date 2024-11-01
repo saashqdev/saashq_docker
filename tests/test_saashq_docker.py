@@ -51,7 +51,7 @@ def test_endpoints(url: str, callback: Any, saashq_site: str):
 )
 def test_assets_endpoint(saashq_site: str):
     check_url_content(
-        url=f"http://127.0.0.1/assets/saashq/images/saashq-framework-logo.svg",
+        url=f"http://127.0.0.1/assets/saashq/images/saashq-logo.svg",
         callback=assets_cb,
         site_name=saashq_site,
     )
