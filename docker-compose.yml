@@ -14,7 +14,7 @@ services:
     image: saashqdev/erpnexus:latest
     deploy:
       restart_policy:
-        condition: none
+        condition: always
     entrypoint:
       - bash
       - -c
@@ -42,7 +42,7 @@ services:
     image: saashqdev/erpnexus:latest
     deploy:
       restart_policy:
-        condition: none
+        condition: always
     volumes:
       - sites:/home/saashq/saashq-wrench/sites
       - logs:/home/saashq/saashq-wrench/logs
