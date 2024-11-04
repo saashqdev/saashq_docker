@@ -2,7 +2,7 @@ version: "3"
 
 services:
   backend:
-    image: saashq/erpnexus:latest
+    image: saashqdev/erpnexus:latest
     deploy:
       restart_policy:
         condition: on-failure
@@ -11,7 +11,7 @@ services:
       - logs:/home/saashq/saashq-wrench/logs
 
   configurator:
-    image: saashq/erpnexus:latest
+    image: saashqdev/erpnexus:latest
     deploy:
       restart_policy:
         condition: none
@@ -39,7 +39,7 @@ services:
       - logs:/home/saashq/saashq-wrench/logs
 
   create-site:
-    image: saashq/erpnexus:latest
+    image: saashqdev/erpnexus:latest
     deploy:
       restart_policy:
         condition: none
@@ -89,7 +89,7 @@ services:
       - db-data:/var/lib/mysql
 
   frontend:
-    image: saashq/erpnexus:latest
+    image: saashqdev/erpnexus:latest
     depends_on:
       - websocket
     deploy:
@@ -113,7 +113,7 @@ services:
       - "8080:8080"
 
   queue-long:
-    image: saashq/erpnexus:latest
+    image: saashqdev/erpnexus:latest
     deploy:
       restart_policy:
         condition: on-failure
@@ -127,7 +127,7 @@ services:
       - logs:/home/saashq/saashq-wrench/logs
 
   queue-short:
-    image: saashq/erpnexus:latest
+    image: saashqdev/erpnexus:latest
     deploy:
       restart_policy:
         condition: on-failure
@@ -157,7 +157,7 @@ services:
       - redis-cache-data:/data
 
   scheduler:
-    image: saashq/erpnexus:latest
+    image: saashqdev/erpnexus:latest
     deploy:
       restart_policy:
         condition: on-failure
@@ -169,13 +169,13 @@ services:
       - logs:/home/saashq/saashq-wrench/logs
 
   websocket:
-    image: saashq/erpnexus:latest
+    image: saashqdev/erpnexus:latest
     deploy:
       restart_policy:
         condition: on-failure
     command:
       - node
-      - /home/saashq/saashq-wrench/apps/frappe/socketio.js
+      - /home/saashq/saashq-wrench/apps/saashq/socketio.js
     volumes:
       - sites:/home/saashq/saashq-wrench/sites
       - logs:/home/saashq/saashq-wrench/logs
