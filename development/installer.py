@@ -72,7 +72,7 @@ def get_args_parser():
         "--saashq-branch",
         action="store",
         type=str,
-        help="saashq repo to use, default: version-15",  # noqa: E501
+        help="saashq repo to use, default: main",  # noqa: E501
         default="version-15",
     )
     parser.add_argument(

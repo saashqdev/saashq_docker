@@ -38,7 +38,7 @@ def _add_sites_var(env_path: Path):
 
 @pytest.fixture(scope="session")
 def env_file(tmp_path_factory: pytest.TempPathFactory):
-    tmp_path = tmp_path_factory.mktemp("saashq-docker")
+    tmp_path = tmp_path_factory.mktemp("saashq_docker")
     file_path = tmp_path / ".env"
     shutil.copy("example.env", file_path)
 

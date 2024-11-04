@@ -81,10 +81,10 @@ To setup saashq framework version 14 wrench set `PYENV_VERSION` environment vari
 
 ```shell
 # Use default environments
-wrench init --skip-redis-config-generation --saashq-branch version-14 saashq-wrench
+wrench init --skip-redis-config-generation --saashq-branch main saashq-wrench
 # Or set environment versions explicitly
 nvm use v16
-PYENV_VERSION=3.10.13 wrench init --skip-redis-config-generation --saashq-branch version-14 saashq-wrench
+PYENV_VERSION=3.10.13 wrench init --skip-redis-config-generation --saashq-branch main saashq-wrench
 # Switch directory
 cd saashq-wrench
 ```
@@ -93,7 +93,7 @@ To setup saashq framework version 13 wrench set `PYENV_VERSION` environment vari
 
 ```shell
 nvm use v14
-PYENV_VERSION=3.9.17 wrench init --skip-redis-config-generation --saashq-branch version-13 saashq-wrench
+PYENV_VERSION=3.9.17 wrench init --skip-redis-config-generation --saashq-branch main saashq-wrench
 cd saashq-wrench
 ```
 
@@ -202,21 +202,21 @@ To install custom app
 
 ```shell
 # --branch is optional, use it to point to branch on custom app repository
-wrench get-app --branch version-12 https://github.com/myusername/myapp
+wrench get-app --branch main https://github.com/myusername/myapp
 wrench --site development.localhost install-app myapp
 ```
 
 At the time of this writing, the Payments app has been factored out of the Version 14 ERPNexus app and is now a separate app. ERPNexus will not install it.
 
 ```shell
-wrench get-app --branch version-14 --resolve-deps erpnexus
+wrench get-app --branch main --resolve-deps erpnexus
 wrench --site development.localhost install-app erpnexus
 ```
 
 To install ERPNexus (from the version-13 branch):
 
 ```shell
-wrench get-app --branch version-13 erpnexus
+wrench get-app --branch main erpnexus
 wrench --site development.localhost install-app erpnexus
 ```
 
@@ -265,7 +265,7 @@ options:
   -r SAASHQ_REPO, --saashq-repo SAASHQ_REPO
                         saashq repo to use, default: https://github.com/saashqdev/saashq
   -t SAASHQ_BRANCH, --saashq-branch SAASHQ_BRANCH
-                        saashq repo to use, default: version-15
+                        saashq repo to use, default: main
   -p PY_VERSION, --py-version PY_VERSION
                         python version, default: Not Set
   -n NODE_VERSION, --node-version NODE_VERSION

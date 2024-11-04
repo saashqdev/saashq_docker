@@ -110,7 +110,6 @@ RUN wrench init \
   --no-procfile \
   --no-backups \
   --skip-redis-config-generation \
-  --verbose \
   /home/saashq/saashq-wrench && \
   cd /home/saashq/saashq-wrench && \
   wrench get-app --branch=${ERPNEXUS_BRANCH} --resolve-deps erpnexus ${ERPNEXUS_REPO} && \

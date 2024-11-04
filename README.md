@@ -9,14 +9,6 @@ To get started you need [Docker](https://docs.docker.com/get-docker/), [docker-c
 
 Once completed, chose one of the following two sections for next steps.
 
-### Try in Play With Docker
-
-To play in an already set up sandbox, in your browser, click the button below:
-
-<a href="https://labs.play-with-docker.com/?stack=https://raw.githubusercontent.com/saashq/saashq_docker/main/pwd.yml">
-  <img src="https://raw.githubusercontent.com/play-with-docker/stacks/master/assets/images/button.png" alt="Try in PWD"/>
-</a>
-
 ### Try on your Dev environment
 
 First clone the repo:
@@ -62,14 +54,3 @@ If you ran in a Dev Docker environment, to view container logs: `docker compose 
 - [Wrench Console and VSCode Debugger](docs/wrench-console-and-vscode-debugger.md)
 - [Connect to localhost services](docs/connect-to-localhost-services-from-containers-for-local-app-development.md)
 
-### [Troubleshoot](docs/troubleshoot.md)
-
-# Contributing
-
-If you want to contribute to this repo refer to [CONTRIBUTING.md](CONTRIBUTING.md)
-
-This repository is only for container related stuff. You also might want to contribute to:
-
-- [Saashq framework](https://github.com/saashqdev/saashq#contributing),
-- [ERPNexus](https://github.com/saashqdev/erpnexus#contributing),
-- [Saashq Wrench](https://github.com/saashqdev/wrench).
